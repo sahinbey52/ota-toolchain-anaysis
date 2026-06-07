@@ -1,12 +1,12 @@
 * DOSYA: udp-server.z1 (Projede kullanılan)
 1. Dosyanın ELF Sınıfı, Mimarisi ve Giriş Adresi
 
-Komut: file udp-server.z1
-Çıktı: udp-server.z1: ELF 32-bit LSB executable, TI msp430, version 1 (embedded), statically linked, with debug_info, not stripped
+Komut: ```file udp-server.z1```
+Çıktı: ```udp-server.z1: ELF 32-bit LSB executable, TI msp430, version 1 (embedded), statically linked, with debug_info, not stripped```
 
-Komut: msp430-readelf -h udp-server.z1
+Komut: ```msp430-readelf -h udp-server.z1```
 Çıktı:
-ELF Header:
+```ELF Header:
   Magic:   7f 45 4c 46 01 01 01 ff 00 00 00 00 00 00 00 00 
   Class:                             ELF32
   Data:                              2's complement, little endian
@@ -25,14 +25,14 @@ ELF Header:
   Number of program headers:         5
   Size of section headers:           40 (bytes)
   Number of section headers:         20
-  Section header string table index: 17
+  Section header string table index: 17```
 
 Çıktılardan ELF sınıfı "ELF32", mimarisi "TI msp430" ve sistem başladığında işlemci veya bootloader'in ilk başlayacağı adres ise "0x3100" olarak görünmektedir.
 
 2. Bölüm Analizi
-Komut: msp430-readelf -S udp-server.z1
+Komut: ```msp430-readelf -S udp-server.z1```
 Çıktı:
-There are 20 section headers, starting at offset 0x118f8:
+```There are 20 section headers, starting at offset 0x118f8:
 
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
@@ -59,9 +59,9 @@ Section Headers:
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings)
   I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
-  O (extra OS processing required) o (OS specific), p (processor specific)
+  O (extra OS processing required) o (OS specific), p (processor specific)```
 
-.text: "00003100" adresinden başlamaktedır. Sistemin ilk başladığı yer burasıdır ve program kodlarının yer aldığı kısımdır.
+__.text:__ "00003100" adresinden başlamaktedır. Sistemin ilk başladığı yer burasıdır ve program kodlarının yer aldığı kısımdır.
 __.rodata:__ "0000e8b4" adresinden başlamaktadır. String ve const gibi salt okunur verilerin bulunduğu kısımdır.
 __.data:__ "00001100" adresinden başlamaktedır. Başlangıç değeri atanmış global değişkenlerin bulunduğu kısımdır.
 __.bss:__ "0000124e" adresinden başlamaktadır. Başlangıç değeri atanmamış global değişkenlerin bulunduğu kısımdır.
@@ -70,10 +70,10 @@ __.vectors:__ "0000ffc0" adresinden başlamakteadır. Kesme geldiğinde dallanı
 __.comment:__ Derleyici bilgilerinin yer aldığı kısımdır ve cihaza yüklenmeyeceği için adres alanı yoktur.
 
 3. Hafıza Analizi (Kod ve Veri Boyutları)
-Komut: msp430-size udp-server.z1
+Komut: ```msp430-size udp-server.z1```
 Çıktı:
-   text	   data	    bss	    dec	    hex	filename
-  48765	    334	   5982	  55081	   d729	udp-server.z1
+```   text	   data	    bss	    dec	    hex	filename
+  48765	    334	   5982	  55081	   d729	udp-server.z1```
 
 text: ".text", ".rodata" ve ".vectors" kısımlarından oluşmaktadır ve 48765 byte bu kısımların toplam boyutudur.
 data: ".data" kısmından oluşur ve ondalık olarak 334 byte boyutundadır.
@@ -84,9 +84,9 @@ Gerekli ROM alanı: text + data = 49099 byte = 47,95 kB
 Gerekli RAM alanı: bss + data = 6316 byte = 6,17 kB
 
 4. Sembol Tablosu ve Anlamlı Semboller
-Komut: msp430-readelf -s udp-server.z1
+Komut: ```msp430-readelf -s udp-server.z1```
 Çıktı:
-Symbol table '.symtab' contains 1149 entries:
+```Symbol table '.symtab' contains 1149 entries:
    Num:    Value  Size Type    Bind   Vis      Ndx Name
      0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
      1: 00003100     0 SECTION LOCAL  DEFAULT    1 
@@ -129,15 +129,15 @@ Symbol table '.symtab' contains 1149 entries:
   1145: 0000d724    28 FUNC    GLOBAL DEFAULT    1 uipbuf_add_ext_hdr
   1146: 0000ce7a    44 FUNC    GLOBAL DEFAULT    1 uip_sr_free_all
   1147: 00006712     6 FUNC    GLOBAL DEFAULT    1 leds_init
-  1148: 00007426    18 FUNC    GLOBAL DEFAULT    1 platform_init_stage_one
+  1148: 00007426    18 FUNC    GLOBAL DEFAULT    1 platform_init_stage_one```
 
 Burada derleyicinin ve bağlayıcının kod içindeki tüm fonksiyon adlarını, global değişken isimlerini, kaynak dosya adlarını ve donanımsal yazmaçları (register) hafıza adresleriyle eşleştirdiği sembol tablosu görünmektedir. "Num" tablodaki indeks numarasını, "Value" bellek adresini, "Size" sembolün bellekte kapladığı alanı, "Type" sembolün neyi temsil ettiğini, "Bind" sembolün görünürlük alanını, "Vis" sembolün dışarıya karşı görünürlüğünü, "Ndx" sembolün Bölüm Analizi'nde incelenen hangi ELF bölümü içinde yer aldığını ve "Name" sembolün temsil ettiği nesnenin gerçek adını göstermektedir.
 Tabloda Contiki-NG işletim sisteminin ana programı "contiki-main.c", "__P1IN" ve "P5OUT" şeklinde donanımsal pinler ve UDP protokolünü yöneten "simple_udp_process" programlarının varlığı göze çarpmaktadır. Liste çok uzun olduğu için sadece başı ve sonu incelenmiştir.
 
 6. Kesme Vektörleri veya Başlangıç Adresi ile İlişkili Bilgiler
-Komut: msp430-objdump -d udp-server.z1
+Komut: ```msp430-objdump -d udp-server.z1```
 Çıktı:
-udp-server.z1:     file format elf32-msp430
+```udp-server.z1:     file format elf32-msp430
 
 Disassembly of section .text:
 
@@ -155,7 +155,7 @@ Disassembly of section .vectors:
     ffc0:	80 33 80 33 80 33 80 33 80 33 80 33 80 33 80 33     .3.3.3.3.3.3.3.3
     ffd0:	80 33 80 33 80 33 80 33 80 33 80 33 80 33 80 33     .3.3.3.3.3.3.3.3
     ffe0:	fa 36 7e 37 48 35 cc 35 80 33 80 33 80 33 b2 37     .6~7H5.5.3.3.3.7
-    fff0:	2e 36 92 37 dc 37 80 33 08 36 80 33 80 33 00 31     .6.7.7.3.6.3.3.1
+    fff0:	2e 36 92 37 dc 37 80 33 08 36 80 33 80 33 00 31     .6.7.7.3.6.3.3.1```
 
 Burada sistemin başladığı adres olan "0x3100" adresinde başlangıçta "Watchdog Zamanlayıcıyı" ayarlayan ve RAM temizliği gibi işlemlerin başlatılmasını sağlayan "__watchdog_support" fonksiyonu görülmektedir. En altta ile kesme vektörleri yer almaktadır. "fffe" ve "ffff" adresleri ters olarak yan yana koyulduğunda sistemin başladığı "3100" adresi görülmektedir. Buradan "fffe" ve "ffff" adreslerindeki vektörün sistemi yeniden başlatma vektörü olduğu anlaşılmaktadır.
 
@@ -164,9 +164,9 @@ Burada sistemin başladığı adres olan "0x3100" adresinde başlangıçta "Watc
 Yukarıdaki başlıklarda yapılan incelemeler de dikkata alındığında incelenen dosya içerisinde sadece makine kodu değil ayrıca başlıklar, bölüm tablosu, sembol tablosu gibi birçok veri içerdiği görülmektedir. Ancak binary dosyalarında sadece makine kodu bulunmaktadır. Bu sebeple bu firmware dosyaları  "ELF executable" olarak değerlendirilmektedir.
 
 9. String Analizi
-Komut: msp430-strings udp-server.z1
+Komut: ```msp430-strings udp-server.z1```
 Çıktı:
-...
+```...
 ADXL345 sensor
 Accelerometer process
 Button
@@ -233,6 +233,6 @@ xmem_erase: bad size
 xmem_erase: bad offset
 (null)
 % $J
-6~7H5
+6~7H5```
 
 Buradan elde kaynak kodlar olmadan aktif olan sensörler, kullanılan işletim sistemi, çalışma esnasında ekrana basılan loglar, yazılımın ne yapmaya çalıştığı gibi bilgilere ulaşılabilmektedir. Projede kullanılan alıcı düğüm incelendiği için paket alımıyla ilgili loglar görünmektedir.
