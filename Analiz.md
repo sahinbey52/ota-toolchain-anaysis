@@ -65,13 +65,13 @@ Key to Flags:
   O (extra OS processing required) o (OS specific), p (processor specific)
 ```
 
-**.text:** "00003100" adresinden başlamaktedır. Sistemin ilk başladığı yer burasıdır ve program kodlarının yer aldığı kısımdır.
-**.rodata:** "0000e8b4" adresinden başlamaktadır. String ve const gibi salt okunur verilerin bulunduğu kısımdır.
-**.data:** "00001100" adresinden başlamaktedır. Başlangıç değeri atanmış global değişkenlerin bulunduğu kısımdır.
-**.bss:** "0000124e" adresinden başlamaktadır. Başlangıç değeri atanmamış global değişkenlerin bulunduğu kısımdır.
-**.noinit:** "000029aa" adresinden başlamaktadır. Sisteme reset atıldığında içeriği silinmeyen, başlangıç değeri olmayan değişkenlerin bulunduğu kısımdır.
-**.vectors:** "0000ffc0" adresinden başlamakteadır. Kesme geldiğinde dallanılacak olan fonksiyonların adreslerinin bulunduğu kısımdır.
-**.comment:** Derleyici bilgilerinin yer aldığı kısımdır ve cihaza yüklenmeyeceği için adres alanı yoktur.
+**.text:** "00003100" adresinden başlamaktedır. Sistemin ilk başladığı yer burasıdır ve program kodlarının yer aldığı kısımdır.    
+**.rodata:** "0000e8b4" adresinden başlamaktadır. String ve const gibi salt okunur verilerin bulunduğu kısımdır.    
+**.data:** "00001100" adresinden başlamaktedır. Başlangıç değeri atanmış global değişkenlerin bulunduğu kısımdır.    
+**.bss:** "0000124e" adresinden başlamaktadır. Başlangıç değeri atanmamış global değişkenlerin bulunduğu kısımdır.    
+**.noinit:** "000029aa" adresinden başlamaktadır. Sisteme reset atıldığında içeriği silinmeyen, başlangıç değeri olmayan değişkenlerin bulunduğu kısımdır.                
+**.vectors:** "0000ffc0" adresinden başlamakteadır. Kesme geldiğinde dallanılacak olan fonksiyonların adreslerinin bulunduğu kısımdır.   
+**.comment:** Derleyici bilgilerinin yer aldığı kısımdır ve cihaza yüklenmeyeceği için adres alanı yoktur.    
 
 3. Hafıza Analizi (Kod ve Veri Boyutları)
 Komut: ```msp430-size udp-server.z1```
